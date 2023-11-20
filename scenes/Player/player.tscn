@@ -1,10 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmt5eqrfx6h02"]
+[gd_scene load_steps=9 format=3 uid="uid://cmt5eqrfx6h02"]
 
 [ext_resource type="Texture2D" uid="uid://jn07p3skghm6" path="res://graphics/player/player.png" id="1_75mxt"]
 [ext_resource type="Script" path="res://scenes/Player/player.gd" id="1_re4ai"]
+[ext_resource type="Texture2D" uid="uid://oanqifm04o5f" path="res://graphics/decals/white.png" id="3_bg053"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dbkxn"]
 radius = 53.0
+
+[sub_resource type="Gradient" id="Gradient_wlk3o"]
+colors = PackedColorArray(0.443137, 0.619608, 1, 0.788235, 0.531609, 0.744405, 0.999998, 0.235294)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qi5e5"]
+gradient = SubResource("Gradient_wlk3o")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pmthn"]
+emission_shape = 1
+emission_sphere_radius = 5.0
+particle_flag_disable_z = true
+direction = Vector3(50, 0, 0)
+spread = 10.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1000.0
+initial_velocity_max = 1500.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 0.25
+scale_max = 0.75
+color = Color(0.677529, 0.784644, 1, 0.74902)
+color_ramp = SubResource("GradientTexture1D_qi5e5")
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_73eob"]
+polygon = PackedVector2Array(22, -61, 44, -42, 51, -27, 70, -20, 85, -6, 93, -7, 117, 1, 128, 4, 134, 14, 133, 33, 127, 37, 116, 37, 102, 45, 91, 55, 56, 48, 44, 46, -5, 60, -34, 57, -40, 36, -53, 25, -50, 15, -59, 3, -56, -10, -51, -27, -45, -42, -33, -45, -20, -51, -3, -58)
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 31
@@ -37,6 +63,18 @@ position = Vector2(129, 29)
 
 [node name="Marker2D3" type="Marker2D" parent="LaserStartPositions"]
 position = Vector2(130, 14)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(135, 22)
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_pmthn")
+texture = ExtResource("3_bg053")
+lifetime = 0.1
+one_shot = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_73eob")
 
 [connection signal="timeout" from="LaserTimer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="GrenadeTimer" to="." method="_on_grenade_timer_timeout"]
