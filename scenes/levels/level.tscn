@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://t7ggil8ro6jj"]
+[gd_scene load_steps=16 format=3 uid="uid://t7ggil8ro6jj"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_4i788"]
 [ext_resource type="PackedScene" uid="uid://n7r4wqfiw300" path="res://scenes/Objects/gate.tscn" id="2_prvb5"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://c45af4a54bybi" path="res://graphics/tilesets/soil.png" id="7_w31g2"]
 [ext_resource type="PackedScene" uid="uid://b40si5vy82s7s" path="res://scenes/Houses/house.tscn" id="8_3amei"]
 [ext_resource type="PackedScene" uid="uid://ddpc6iko3qudm" path="res://scenes/Objects/steam_vent.tscn" id="9_qmj43"]
+[ext_resource type="PackedScene" uid="uid://32ogjypw7ca4" path="res://scenes/Objects/light_fan_animation.tscn" id="10_pkv6b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bvxgl"]
 resource_name = "Walls"
@@ -93,8 +94,15 @@ scale = Vector2(0.930659, 0.937229)
 [node name="SteamVent" parent="Ground" instance=ExtResource("9_qmj43")]
 position = Vector2(-295, 544)
 
+[node name="LightFanAnimation" parent="Ground" instance=ExtResource("10_pkv6b")]
+position = Vector2(516, 2069)
+autoplay = "default"
+frame = 46
+frame_progress = 0.450927
+
 [node name="gate" parent="." instance=ExtResource("2_prvb5")]
 position = Vector2(492, -631)
+metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("4_47iy7")]
 position = Vector2(165, 508)
@@ -104,7 +112,10 @@ zoom = Vector2(0.6, 0.6)
 position_smoothing_enabled = true
 
 [node name="Projectiles" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
+[connection signal="player_entered" from="Ground/House" to="." method="_on_house_player_entered"]
+[connection signal="player_exited" from="Ground/House" to="." method="_on_house_player_exited"]
 [connection signal="player_entered_gate" from="gate" to="." method="_on_gate_player_entered_gate"]
 [connection signal="grenade" from="Player" to="." method="_on_player_grenade"]
 [connection signal="laser" from="Player" to="." method="_on_player_laser"]
